@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>T(R,O) Grasp++</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <!-- visitor statistics -->
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  <!-- model-viewer -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            \(\small \mathcal{T(R,O)}\) Grasp++: Cross-Embodiment Dexterous Grasping in Cluttered Environments at Scale
+          </h1>
+          
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://xinfei21.github.io/web/">Xin Fei</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://ariszxxu.github.io/">Zhixuan Xu</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              Huaicong Fang<sup>3</sup>,
+            </span>
+            <span class="author-block">
+              Fangjun Chen<sup>2,4</sup>,
+            </span>
+            <span class="author-block">
+              Zhaoyu Mu<sup>1</sup>,
+            </span>
+            <span class="author-block">
+              Rui Yang<sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://zhexiluo.github.io/">Zhexi Luo</a><sup>2,5</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://linsats.github.io/">Lin Shao</a><sup>1,2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <div>
+              <span class="author-block"><sup>1</sup>National University of Singapore,</span>
+              <span class="author-block"><sup>2</sup>RoboScience,</span>
+              <span class="author-block"><sup>3</sup>Zhejiang University,</span>
+              <span class="author-block"><sup>4</sup>Southern University of Science and Technology,</span>
+              <span class="author-block"><sup>5</sup>Sun Yat-sen University</span>
+            </div>
+          </div>
+      
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/Barrybarry-Smith/TRO-Grasp" 
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <!-- Arxiv Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2510.12724" 
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" loop playsinline height="100%" controls class="video-with-border">
+        <source src="./static/assets/teaser.mp4" type="video/mp4">
+      </video>      
+    </div>
+  </div>
+</section>
+
+<section class="teaser image">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/assets/teaser.png" alt="Teaser Image" style="width:100%; height:auto;">
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Dexterous grasping in cluttered scenes remains a central challenge in robotic manipulation, 
+            as it requires high-dimensional hand coordination under complex object-environment constraints. 
+            To address this problem, we introduce one of the largest simulation benchmarks to date, 
+            comprising around 0.5B grasp annotations across eight dexterous hands and approximately 50K objects. 
+            Further, we propose \(\small \mathcal{T}(R,O)\) Grasp++, a scalable diffusion-based framework for cross-embodiment 
+            dexterous grasp synthesis in cluttered environments. Extensive experiments demonstrate that our model 
+            significantly outperforms existing baselines, achieving an average success rate of 88% across eight 
+            dexterous hands. Meanwhile, our pipeline achieves only 0.3s inference latency while improving 
+            inference sample efficiency by over 10 times.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</section>
+
+<section class="pipeline">
+  <h2 class="title is-3 has-text-centered">Method Overview</h2>
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top: 10px; padding-bottom: 10px;">
+      <img src="./static/assets/pipeline.png" alt="Teaser Image" style="width:100%; height:auto;">
+      <p>
+        <strong>Overview of \(\small \mathcal{T(R,O)}\) Grasp++:</strong> We define \(\small \mathcal{T(R,O)}\) Graph++ to capture 
+        spatial relations among target object, surrounding environment, and arbitrary dexterous hand. We then apply a graph 
+        diffusion model to generate link-wise \(\small SE(3)\) poses.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- model-viewer -->
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+<!-- ========================= -->
+<!-- Simulation Results -->
+<!-- ========================= -->
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column">
+        <h2 class="title is-3 has-text-centered">Simulation Results</h2>
+      </div>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="mesh-control">
+      <div class="mesh-label">
+        Mesh ID: <span id="mesh-id-label">0</span>
+      </div>
+
+      <input
+        type="range"
+        id="mesh-id-slider"
+        min="0"
+        max="4"
+        value="0"
+        step="1"
+      >
+    </div>
+
+    <!-- 2 rows x 4 columns -->
+    <div class="hand-grid" id="hand-grid"></div>
+
+  </div>
+</section>
+
+<style>
+  .mesh-control {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .mesh-label {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  #mesh-id-slider {
+    display: block;
+    width: 260px;
+    margin: 10px auto 0 auto;
+  }
+
+  .hand-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .hand-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hand-viewer {
+    width: 200px;
+    height: 200px;
+    border: 3px solid #66c0ff;
+    border-radius: 15px;
+    background-color: #f8f8f8;
+  }
+
+  .hand-card p {
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  @media screen and (max-width: 900px) {
+    .hand-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 520px) {
+    .hand-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+</style>
+
+<script>
+  const hands = [
+    {
+      folder: "allegro_hand",
+      name: "Allegro Hand",
+      alt: "Allegro Hand"
+    },
+    {
+      folder: "ability_hand",
+      name: "Ability Hand",
+      alt: "Ability Hand"
+    },
+    {
+      folder: "barrett_hand",
+      name: "Barrett Hand",
+      alt: "Barrett Hand"
+    },
+    {
+      folder: "dclaw_gripper",
+      name: "DClaw Gripper",
+      alt: "DClaw Gripper"
+    },
+    {
+      folder: "leaphand",
+      name: "LEAP Hand",
+      alt: "LEAP Hand"
+    },
+    {
+      folder: "shadow_hand",
+      name: "Shadow Hand",
+      alt: "Shadow Hand"
+    },
+    {
+      folder: "schunk_hand",
+      name: "Schunk Hand",
+      alt: "Schunk Hand"
+    },
+    {
+      folder: "xhand",
+      name: "XHand",
+      alt: "XHand"
+    }
+  ];
+
+  const meshSlider = document.getElementById("mesh-id-slider");
+  const meshLabel = document.getElementById("mesh-id-label");
+  const handGrid = document.getElementById("hand-grid");
+
+  function getMeshPath(folder, meshId) {
+    return `./static/assets/meshes/${folder}/${meshId}.glb`;
+  }
+
+  function createHandCards(meshId = 0) {
+    handGrid.innerHTML = "";
+
+    hands.forEach(hand => {
+      const card = document.createElement("div");
+      card.className = "hand-card";
+
+      card.innerHTML = `
+        <model-viewer
+          class="hand-viewer"
+          data-folder="${hand.folder}"
+          src="${getMeshPath(hand.folder, meshId)}"
+          alt="${hand.alt}"
+          camera-orbit="180deg 0deg 105%"
+          camera-target="0m 0m 0m"
+          min-camera-orbit="auto 0deg auto"
+          max-camera-orbit="auto 180deg auto"
+          camera-controls
+          ar>
+        </model-viewer>
+        <p>${hand.name}</p>
+      `;
+
+      handGrid.appendChild(card);
+    });
+  }
+
+  function updateMesh(meshId) {
+    meshLabel.textContent = meshId;
+
+    const viewers = document.querySelectorAll(".hand-viewer");
+
+    viewers.forEach(viewer => {
+      const folder = viewer.dataset.folder;
+      viewer.src = getMeshPath(folder, meshId);
+    });
+  }
+
+  createHandCards(0);
+
+  meshSlider.addEventListener("input", function () {
+    updateMesh(this.value);
+  });
+</script>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Real World. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Real-world Results</h2>
+        <div class="content has-text-centered">
+
+          <h3 style="margin-bottom: 8px; font-size: 1.2rem; color: #444;">
+            XHand: 85%
+          </h3>
+          
+          <div style="margin-bottom: 20px;">
+            <video autoplay muted loop playsinline style="width:100%; height:auto;">
+              <source src="./static/assets/xhand.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <h3 style="margin-bottom: 8px; font-size: 1.2rem; color: #444;">
+            LEAP Hand: 82%
+          </h3>
+          <div>
+            <video autoplay muted loop playsinline style="width:100%; height:auto;">
+              <source src="./static/assets/leaphand.mp4" type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Real World. -->
+
+    <!-- Single View. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Single View Grasping</h2>
+        <div class="content has-text-centered">
+
+          <h3 style="margin-bottom: 8px; font-size: 1.2rem; color: #444;">
+            Wuji Hand: 82.1%
+          </h3>
+          
+          <div style="margin-bottom: 20px;">
+            <video autoplay muted loop playsinline style="width:100%; height:auto;">
+              <source src="./static/assets/single_view.mp4" type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Single View. -->
+
+    <!-- Sequential. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Sequential Table Clearing</h2>
+        <div class="content has-text-centered">
+
+          <div style="margin-bottom: 20px;">
+            <video autoplay muted loop playsinline style="width:50%; height:auto;">
+              <source src="./static/assets/sequential.mp4" type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Sequential. -->
+  </div>
+</section>
+
+</body>
+</html>
